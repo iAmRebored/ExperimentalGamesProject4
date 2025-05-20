@@ -263,4 +263,4 @@ MonoBehaviour:
   foodName: Apple
   eatTime: 3
   points: 10
-  fullness: 15
+  fullness: 25
