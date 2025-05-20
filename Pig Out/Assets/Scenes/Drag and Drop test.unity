@@ -985,7 +985,7 @@ MonoBehaviour:
   foodPrefabs:
   - {fileID: 9174488601484513151, guid: e3f527edfb401f44eafa29e974389f18, type: 3}
   foodCount: 50
-  spawnRadius: 3
+  spawnRadius: 1.5
   spawnHeight: 10
   spawnOverTime: 1
   spawnInterval: 0.2
