@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Drag and Drop test.unity
+    guid: 567a225ecf91a1c4bb20f9d1f3616f49
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
