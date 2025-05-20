@@ -30,6 +30,7 @@ public class PigAI : MonoBehaviour
     public float penalty;
     [Tooltip("How long they throw up for")]
     public float throwUpTime;
+    public bool eliminated = false;
 
     private State state;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

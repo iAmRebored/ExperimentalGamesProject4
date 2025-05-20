@@ -14,7 +14,7 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PigAI.roundStarted)
+        if (PigAI.roundStarted && timeRemaining >= 0)
         {
             timeRemaining -= Time.deltaTime;
             DisplayTime(timeRemaining);
