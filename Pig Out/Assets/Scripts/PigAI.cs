@@ -22,6 +22,7 @@ public class PigAI : MonoBehaviour
     [Tooltip("When they should start eating")]
     public int fullnessStartingPoint;
     private bool updateStats = true;
+    public static bool roundStarted = true;
     [Tooltip("How many points should they be getting while eating")]
     public float pointIncrease;
     public float points = 0f;
@@ -40,7 +41,7 @@ public class PigAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (updateStats)
+        if (updateStats && roundStarted)
         {
             UnityEngine.Debug.Log(state);
             if (state == State.Idle)
