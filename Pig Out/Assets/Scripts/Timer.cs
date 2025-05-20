@@ -3,11 +3,12 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public float timeRemaining;
+    public static float timeRemaining;
     public TMP_Text timeText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        timeRemaining = 60;
     }
 
     // Update is called once per frame
