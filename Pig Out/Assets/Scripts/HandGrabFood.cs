@@ -8,9 +8,20 @@ public class HandGrabFood : MonoBehaviour
     public LayerMask foodLayer;         // Set this to include only the "Food" layer
 
     private GameObject heldFood;
+    private Player player;
+
+    private void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
 
     void Update()
     {
+        if (player.state == Player.State.ThrowingUp)
+        {
+            return; // Don't allow grabbing food while throwing up
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             TryGrabFood();
@@ -23,7 +34,7 @@ public class HandGrabFood : MonoBehaviour
 
         if (heldFood)
         {
-            heldFood.transform.position = transform.position;
+            heldFood.transform.position = heldFoodPosition.position;
         }
     }
 

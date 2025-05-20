@@ -6,9 +6,20 @@ public class HandFollowMouse : MonoBehaviour
 {
     public Camera playerCamera;   // Reference to the main camera
     public float followHeight = 1.0f; // Fixed Y position for the hand
+    private Player player; // Reference to the Player script
+
+    private void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
 
     void Update()
     {
+        if (player.state == Player.State.ThrowingUp)
+        {
+            return; // Don't allow hand movement while throwing up
+        }
+
         MoveHandToMouse();
     }
 
