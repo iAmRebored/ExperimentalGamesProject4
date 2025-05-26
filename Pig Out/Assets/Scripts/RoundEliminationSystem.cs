@@ -10,7 +10,7 @@ public class RoundEliminationSystem : MonoBehaviour
     public static void StartRound()
     {
         PigAI.roundStarted = true;
-        Timer.timeRemaining = 60;
+        Timer.timeRemaining = 30;
     }
 
     public static void EndRound()
@@ -18,7 +18,7 @@ public class RoundEliminationSystem : MonoBehaviour
         PigAI.roundStarted = false;
     }
 
-    private void EliminateCompetitor()
+    public void EliminateCompetitor()
     {
         GameObject lowestScoreCompetitor = player;
         float lowestScore = player.GetComponent<Player>().points;
@@ -37,10 +37,14 @@ public class RoundEliminationSystem : MonoBehaviour
             opponents.RemoveAt(index);
             lowestScoreCompetitor.gameObject.SetActive(false);
             lowestScoreCompetitor.GetComponent<PigAI>().eliminated = true;
+            if (opponents.Count == 0)
+            {
+                //Player won
+            }
         }
         else
         {
-            //Player lost
+            //Player lost go to game over screen
         }
     }
 }

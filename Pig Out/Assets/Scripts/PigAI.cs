@@ -42,7 +42,7 @@ public class PigAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (updateStats && roundStarted)
+        if (updateStats && roundStarted && !eliminated)
         {
             UnityEngine.Debug.Log(state);
             if (state == State.Idle)
