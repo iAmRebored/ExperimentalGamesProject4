@@ -22,12 +22,14 @@ public class RoundEliminationSystem : MonoBehaviour
     {
         GameObject lowestScoreCompetitor = player;
         float lowestScore = player.GetComponent<Player>().points;
+        player.GetComponent<Player>().points = 0;
         int index = -1;
         for (int i = 0; i < opponents.Count; i++)
         {
             if (lowestScore > opponents[i].GetComponent<PigAI>().points)
             {
                 lowestScore = opponents[i].GetComponent<PigAI>().points;
+                opponents[i].GetComponent<PigAI>().points = 0;
                 lowestScoreCompetitor = opponents[i];
                 index = i;
             }
