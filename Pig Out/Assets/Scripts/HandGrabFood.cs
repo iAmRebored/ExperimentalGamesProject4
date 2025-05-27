@@ -52,7 +52,21 @@ public class HandGrabFood : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance, foodLayer))
         {
             GameObject food = hit.collider.gameObject;
+
+            // Check if it's already being grabbed
+            FoodItem foodItem = food.GetComponent<FoodItem>();
+            if (foodItem != null && foodItem.isGrabbed)
+            {
+                return; // Skip if already grabbed
+            }
+
             heldFood = food;
+
+            // Mark as grabbed
+            if (foodItem != null)
+            {
+                foodItem.isGrabbed = true;
+            }
 
             // Optional: disable physics while holding
             if (heldFood.TryGetComponent<Rigidbody>(out Rigidbody rb))
@@ -69,6 +83,13 @@ public class HandGrabFood : MonoBehaviour
     {
         if (heldFood)
         {
+            // Mark as not grabbed
+            FoodItem foodItem = heldFood.GetComponent<FoodItem>();
+            if (foodItem != null)
+            {
+                foodItem.isGrabbed = false;
+            }
+
             // Optional: re-enable physics
             if (heldFood.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
