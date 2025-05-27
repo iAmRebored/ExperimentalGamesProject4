@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: b62c5867306fc9441815b9f81a56a25b
+  - enabled: 1
     path: Assets/Scenes/Drag and Drop test.unity
     guid: 567a225ecf91a1c4bb20f9d1f3616f49
   - enabled: 1
