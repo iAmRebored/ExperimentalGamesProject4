@@ -7,6 +7,8 @@ public class RoundEliminationSystem : MonoBehaviour
 {
     public GameObject player;
     public List<GameObject> opponents;
+    public AudioSource killPig;
+    public GameObject lowestScorer;
 
     public static void StartRound()
     {
@@ -21,7 +23,7 @@ public class RoundEliminationSystem : MonoBehaviour
 
     public void EliminateCompetitor()
     {
-        GameObject lowestScoreCompetitor = player;
+        lowestScorer = player;
         float lowestScore = player.GetComponent<Player>().points;
         player.GetComponent<Player>().points = 0;
         int index = -1;
@@ -31,7 +33,7 @@ public class RoundEliminationSystem : MonoBehaviour
             {
                 lowestScore = opponents[i].GetComponent<Player>().points;
                 opponents[i].GetComponent<Player>().points = 0;
-                lowestScoreCompetitor = opponents[i];
+                lowestScorer = opponents[i];
                 index = i;
             }
         }
@@ -40,7 +42,8 @@ public class RoundEliminationSystem : MonoBehaviour
             opponents.RemoveAt(index);
             //lowestScoreCompetitor.gameObject.SetActive(false);
             //lowestScoreCompetitor.GetComponent<PigAI>().eliminated = true;
-            Destroy(lowestScoreCompetitor);
+            Destroy(lowestScorer);
+            killPig.Play();
             if (opponents.Count == 0)
             {
                 SceneManager.LoadScene("WinScreen");

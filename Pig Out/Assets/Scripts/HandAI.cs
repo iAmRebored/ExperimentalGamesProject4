@@ -11,7 +11,7 @@ public class HandAI : MonoBehaviour
     public float grabRange = 3f;
     public float handSpeed = 5f;
     public float pullSpeed = 8f;
-    public float dropCoolDown = 3f;
+    public float dropCoolDown = 1f;
     public LayerMask foodLayer;
 
     private GameObject targetFood;
@@ -61,47 +61,44 @@ public class HandAI : MonoBehaviour
     IEnumerator GrabAndMoveToMouth(GameObject food)
     {
         isGrabbing = true;
-        FoodItem foodItem = food.GetComponent<FoodItem>();
+
+        // Make a reference to the FoodItem component early, but validate it during use
+        FoodItem foodItem = food ? food.GetComponent<FoodItem>() : null;
 
         // Move hand to food
-        while (Vector2.Distance(
-                    new Vector2(handTransform.position.x, handTransform.position.z),
-                    new Vector2(food.transform.position.x, food.transform.position.z)
-                ) > 0.1f)
+        while (food && foodItem && Vector2.Distance(new Vector2(handTransform.position.x, handTransform.position.z), new Vector2(food.transform.position.x, food.transform.position.z)) > 0.1f)
         {
-            if (foodItem.isGrabbed)
+            if (!food || !foodItem || foodItem.isGrabbed)
             {
                 ResetGrabbing();
                 yield break;
             }
-            Debug.Log("moving to food");
+
             Vector3 targetPosXZ = new Vector3(food.transform.position.x, handTransform.position.y, food.transform.position.z);
             handTransform.position = Vector3.MoveTowards(handTransform.position, targetPosXZ, handSpeed * Time.deltaTime);
             yield return null;
         }
-        Debug.Log("reached food");
 
-        // If it's still free, grab it
-        if (foodItem.isGrabbed)
+        if (!food || !foodItem || foodItem.isGrabbed)
         {
             ResetGrabbing();
             yield break;
         }
 
         foodItem.isGrabbed = true;
+        food.transform.SetParent(handTransform);
         food.transform.localPosition = Vector3.zero;
 
-        Rigidbody rb = food.GetComponent<Rigidbody>();
-        if (rb) rb.isKinematic = true;
+        if (food.TryGetComponent<Rigidbody>(out Rigidbody rb))
+        {
+            rb.isKinematic = true;
+        }
 
         // Move hand to mouth
         isMovingToMouth = true;
-        while (Vector2.Distance(
-                new Vector2(handTransform.position.x, handTransform.position.z),
-                new Vector2(mouthTransform.position.x, mouthTransform.position.z)
-                ) > 0.2f)
+        while (food && foodItem && Vector2.Distance(new Vector2(handTransform.position.x, handTransform.position.z), new Vector2(mouthTransform.position.x, mouthTransform.position.z)) > 0.2f)
         {
-            if (!food || !foodItem.isGrabbed)
+            if (!food || !foodItem || !foodItem.isGrabbed)
             {
                 ResetGrabbing();
                 yield break;
@@ -109,25 +106,29 @@ public class HandAI : MonoBehaviour
 
             Vector3 mouthPosXZ = new Vector3(mouthTransform.position.x, handTransform.position.y, mouthTransform.position.z);
             handTransform.position = Vector3.MoveTowards(handTransform.position, mouthPosXZ, pullSpeed * Time.deltaTime);
-            targetFood.transform.position = heldFoodPosition.position;
             yield return null;
         }
 
-        // Notify food it is ready to be eaten
-        foodItem.isGrabbed = false;
-        foodItem.isTargetedBy = null;
-        if (rb) rb.isKinematic = false;
+        // Do not destroy here if other script handles it — just clean up
+        if (food && food.transform.parent == handTransform)
+        {
+            foodItem.isGrabbed = false;
+            foodItem.isTargetedBy = null;
+            food.transform.SetParent(null);
+            if (rb != null) rb.isKinematic = false;
+        }
 
         ResetGrabbing();
     }
 
     void ResetGrabbing()
     {
+        float timer = dropCoolDown + targetFood.GetComponent<FoodItem>().eatTime;
         targetFood = null;
         isGrabbing = false;
         isMovingToMouth = false;
         paused = true;
-        float timer = dropCoolDown;
+        
         StartCoroutine(DropCooldown(timer));
     }
 

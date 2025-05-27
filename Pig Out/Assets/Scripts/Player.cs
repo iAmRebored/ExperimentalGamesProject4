@@ -133,7 +133,7 @@ public class Player : MonoBehaviour
 
         FoodItem foodItem = food.GetComponent<FoodItem>();
         float baseEatTime = foodItem != null ? foodItem.eatTime : 3f;
-        float timer = baseEatTime / eatingTimeMultiplier;
+        float timer = baseEatTime * eatingTimeMultiplier;
         foodTimers[food] = timer;
 
         eatingEffect.startColor = foodItem != null ? foodItem.GetComponent<Renderer>().material.color : Color.white;
