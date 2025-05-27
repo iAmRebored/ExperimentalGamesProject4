@@ -1937,6 +1937,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodPrefabs:
   - {fileID: 9174488601484513151, guid: e3f527edfb401f44eafa29e974389f18, type: 3}
+  - {fileID: 9174488601484513151, guid: 0fa880c3693e76545941bfdc8a24977f, type: 3}
+  - {fileID: 4785060759555413996, guid: 570fd1a9cae2b334da61bbd6b04b4523, type: 3}
   foodCount: 50
   spawnRadius: 1.5
   spawnHeight: 10
