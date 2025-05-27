@@ -31,9 +31,11 @@ public class Player : MonoBehaviour
     [Header("Throw Up")]
     public float throwUpTime = 3f;
     public ParticleSystem vomitEffect;
+    public AudioSource throwUpSound;
 
     [Header("Eating")]
     public ParticleSystem eatingEffect;
+    public AudioSource eatingSound;
 
     private List<GameObject> foodsBeingEaten = new List<GameObject>();
     private Dictionary<GameObject, float> foodTimers = new Dictionary<GameObject, float>();
@@ -136,6 +138,7 @@ public class Player : MonoBehaviour
 
         eatingEffect.startColor = foodItem != null ? foodItem.GetComponent<Renderer>().material.color : Color.white;
         eatingEffect.Play();
+        eatingSound.Play();
 
         state = State.Eating;
 
@@ -187,6 +190,7 @@ public class Player : MonoBehaviour
     {
         foodsBeingEaten.Clear();
         foodTimers.Clear();
+        eatingSound.Stop();
         eatingEffect.Stop();
 
         if (state == State.Eating)
@@ -200,6 +204,7 @@ public class Player : MonoBehaviour
         state = State.ThrowingUp;
         throwUpTimer = throwUpTime;
         vomitEffect.Play();
+        throwUpSound.Play();
         foodsBeingEaten.Clear();
         foodTimers.Clear();
         eatingEffect.Stop();
