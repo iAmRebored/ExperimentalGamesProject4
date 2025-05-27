@@ -3,12 +3,24 @@ using UnityEngine;
 public class EatCollider : MonoBehaviour
 {
     public Player playerRef;
+    public PigAI pigRef;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Food"))
         {
-            playerRef.StartEating(other.gameObject);
+            if (playerRef != null)
+            {
+                playerRef.StartEating(other.gameObject);
+            }
+            else if (pigRef != null)
+            {
+                //pigRef.StartEating(other.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("No player or pig reference set for EatCollider.");
+            }
         }
     }
 
@@ -16,8 +28,14 @@ public class EatCollider : MonoBehaviour
     {
         if (other.CompareTag("Food"))
         {
-            // Optional: implement CancelEating(other.gameObject) if you want to interrupt that specific food
-            playerRef.CancelEating(other.gameObject); 
+            if (playerRef != null)
+            {
+                playerRef.CancelEating(other.gameObject);
+            }
+            else if (pigRef != null)
+            {
+                //pigRef.CancelEating(other.gameObject);
+            }
         }
     }
 }

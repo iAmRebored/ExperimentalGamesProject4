@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
             throwUpTime += 1f; // Increase throw up time for next time
             penalty += 10f * penaltyMultiplier; // Increase penalty over time
             state = State.Idle;
-            Debug.Log("Finished throwing up...");
+            //Debug.Log("Finished throwing up...");
         }
     }
 
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
 
         state = State.Eating;
 
-        Debug.Log("Started eating " + food.name);
+        //Debug.Log("Started eating " + food.name);
     }
 
     private void ConsumeFood(GameObject food)
@@ -158,7 +158,7 @@ public class Player : MonoBehaviour
             foodsBeingEaten.Remove(food);
             foodTimers.Remove(food);
 
-            Debug.Log("Finished eating " + food.name);
+            //Debug.Log("Finished eating " + food.name);
         }
 
         if (foodsBeingEaten.Count == 0)
@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
         {
             foodsBeingEaten.Remove(food);
 
-            Debug.Log("Canceled eating: " + food.name);
+            //Debug.Log("Canceled eating: " + food.name);
 
             // If that was the last item and state is Eating, return to Idle
             if (foodsBeingEaten.Count == 0 && state == State.Eating)
@@ -192,7 +192,7 @@ public class Player : MonoBehaviour
         if (state == State.Eating)
             state = State.Idle;
 
-        Debug.Log("Stopped eating.");
+        //Debug.Log("Stopped eating.");
     }
 
     private void StartThrowingUp()
@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
         foodTimers.Clear();
         eatingEffect.Stop();
 
-        Debug.Log("Too full! Throwing up...");
+        //Debug.Log("Too full! Throwing up...");
     }
 
     // --------------------- Score & Fullness ---------------------
