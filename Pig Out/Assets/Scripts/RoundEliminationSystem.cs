@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RoundEliminationSystem : MonoBehaviour
 {
@@ -42,11 +43,13 @@ public class RoundEliminationSystem : MonoBehaviour
             Destroy(lowestScoreCompetitor);
             if (opponents.Count == 0)
             {
+                SceneManager.LoadScene("WinScreen");
                 //Player won
             }
         }
         else
         {
+            SceneManager.LoadScene("WinScreen");
             //Player lost go to game over screen
         }
     }
