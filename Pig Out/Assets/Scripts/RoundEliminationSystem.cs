@@ -6,9 +6,42 @@ using UnityEngine.SceneManagement;
 public class RoundEliminationSystem : MonoBehaviour
 {
     public GameObject player;
+    private Player playerStats;
     public List<GameObject> opponents;
     public AudioSource killPig;
+
     public GameObject lowestScorer;
+    private GameObject previousLowestScorer;
+    public int index = -1;
+
+
+    void Awake()
+    {
+        playerStats = player.GetComponent<Player>();
+    }
+
+    void Update()
+    {
+        UpdateLowestScorer();
+    }
+
+    void UpdateLowestScorer()
+    {
+        lowestScorer = player;
+        float lowestScore = playerStats.points;
+        index = -1;
+
+        for (int i = 0; i < opponents.Count; i++)
+        {
+            Player opponentStats = opponents[i].GetComponent<Player>();
+            if (opponentStats.points < lowestScore)
+            {
+                lowestScore = opponentStats.points;
+                lowestScorer = opponents[i];
+                index = i;
+            }
+        }
+    }
 
     public static void StartRound()
     {
@@ -23,37 +56,23 @@ public class RoundEliminationSystem : MonoBehaviour
 
     public void EliminateCompetitor()
     {
-        lowestScorer = player;
-        float lowestScore = player.GetComponent<Player>().points;
-        player.GetComponent<Player>().points = 0;
-        int index = -1;
-        for (int i = 0; i < opponents.Count; i++)
-        {
-            if (lowestScore > opponents[i].GetComponent<Player>().points)
-            {
-                lowestScore = opponents[i].GetComponent<Player>().points;
-                opponents[i].GetComponent<Player>().points = 0;
-                lowestScorer = opponents[i];
-                index = i;
-            }
-        }
+        UpdateLowestScorer(); // Make sure the latest info is used
+
         if (index != -1)
         {
             opponents.RemoveAt(index);
-            //lowestScoreCompetitor.gameObject.SetActive(false);
-            //lowestScoreCompetitor.GetComponent<PigAI>().eliminated = true;
             Destroy(lowestScorer);
             killPig.Play();
+
             if (opponents.Count == 0)
             {
                 SceneManager.LoadScene("WinScreen");
-                //Player won
             }
         }
         else
         {
+            // Player is the lowest
             SceneManager.LoadScene("LossScreen");
-            //Player lost go to game over screen
         }
     }
 }
