@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 56119245725971a47bfe2305dcd053ca,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56119245725971a47bfe2305dcd053ca,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56119245725971a47bfe2305dcd053ca,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56119245725971a47bfe2305dcd053ca,
         type: 3}
@@ -72,6 +72,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 56119245725971a47bfe2305dcd053ca,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8391222552659086748, guid: 56119245725971a47bfe2305dcd053ca,
         type: 3}
@@ -142,6 +147,7 @@ MonoBehaviour:
   points: 25
   fullness: 15
   isGrabbed: 0
+  isTargetedBy: {fileID: 0}
 --- !u!54 &-3338738923233641180
 Rigidbody:
   m_ObjectHideFlags: 0

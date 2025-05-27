@@ -817,6 +817,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 8017677480903610420}
   followHeight: 2.5
+  clampCenter: {fileID: 0}
+  maxRadius: 3
 --- !u!114 &8367884483865996967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -968,8 +970,8 @@ MonoBehaviour:
   state: 0
   fullness: 0
   maxFullness: 100
-  fullnessRecovery: 10
-  fullnessRecoveryFromThrowUp: 100
+  fullnessRecovery: 5
+  fullnessRecoveryFromThrowUp: 20
   eatingTimeMultiplier: 1
   pointsMultiplier: 1
   penaltyMultiplier: 1
