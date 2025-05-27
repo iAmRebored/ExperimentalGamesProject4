@@ -52,7 +52,7 @@ public class RoundEliminationSystem : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("WinScreen");
+            SceneManager.LoadScene("LossScreen");
             //Player lost go to game over screen
         }
     }
