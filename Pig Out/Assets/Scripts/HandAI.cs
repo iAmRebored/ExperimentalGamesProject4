@@ -11,7 +11,7 @@ public class HandAI : MonoBehaviour
     public float grabRange = 3f;
     public float handSpeed = 5f;
     public float pullSpeed = 8f;
-    public float dropCoolDown = 3f;
+    public float dropCoolDown = 1f;
     public LayerMask foodLayer;
 
     private GameObject targetFood;
@@ -123,11 +123,12 @@ public class HandAI : MonoBehaviour
 
     void ResetGrabbing()
     {
+        float timer = dropCoolDown + targetFood.GetComponent<FoodItem>().eatTime;
         targetFood = null;
         isGrabbing = false;
         isMovingToMouth = false;
         paused = true;
-        float timer = dropCoolDown;
+        
         StartCoroutine(DropCooldown(timer));
     }
 
