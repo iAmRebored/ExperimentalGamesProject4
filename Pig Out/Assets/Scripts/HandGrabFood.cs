@@ -10,6 +10,9 @@ public class HandGrabFood : MonoBehaviour
     private GameObject heldFood;
     private Player player;
 
+    private Vector3 previousPosition;
+    private Vector3 handVelocity;
+
     private void Awake()
     {
         player = GetComponentInParent<Player>();
@@ -36,6 +39,10 @@ public class HandGrabFood : MonoBehaviour
         {
             heldFood.transform.position = heldFoodPosition.position;
         }
+
+        // Track velocity of the hand
+        handVelocity = (heldFoodPosition.position - previousPosition) / Time.deltaTime;
+        previousPosition = heldFoodPosition.position;
     }
 
     void TryGrabFood()
@@ -52,6 +59,9 @@ public class HandGrabFood : MonoBehaviour
             {
                 rb.isKinematic = true;
             }
+
+            previousPosition = heldFoodPosition.position;
+            handVelocity = Vector3.zero;
         }
     }
 
@@ -63,6 +73,8 @@ public class HandGrabFood : MonoBehaviour
             if (heldFood.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 rb.isKinematic = false;
+
+                rb.linearVelocity = handVelocity;
             }
 
             heldFood = null;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -32,11 +33,11 @@ public class Player : MonoBehaviour
     public ParticleSystem vomitEffect;
 
     [Header("Eating")]
-    public bool isEating = false;
-    public GameObject currentFood;
-    private float eatTimer = 0f;
-    private float throwUpTimer = 0f;
     public ParticleSystem eatingEffect;
+
+    private List<GameObject> foodsBeingEaten = new List<GameObject>();
+    private Dictionary<GameObject, float> foodTimers = new Dictionary<GameObject, float>();
+    private float throwUpTimer = 0f;
 
     void Update()
     {
@@ -64,18 +65,27 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (isEating)
-        {
-            eatTimer -= Time.deltaTime;
-
-            if (eatTimer <= 0f)
-            {
-                ConsumeFood();
-            }
-        }
-        else
+        if (foodsBeingEaten.Count == 0)
         {
             state = State.Idle;
+            return;
+        }
+
+        List<GameObject> finishedFoods = new List<GameObject>();
+
+        foreach (var food in foodsBeingEaten)
+        {
+            foodTimers[food] -= Time.deltaTime;
+
+            if (foodTimers[food] <= 0f)
+            {
+                finishedFoods.Add(food);
+            }
+        }
+
+        foreach (var food in finishedFoods)
+        {
+            ConsumeFood(food);
         }
     }
 
@@ -115,15 +125,15 @@ public class Player : MonoBehaviour
 
     public void StartEating(GameObject food)
     {
-        if (state == State.ThrowingUp) return;
+        if (state == State.ThrowingUp || foodsBeingEaten.Contains(food)) return;
 
-        isEating = true;
-        currentFood = food;
+        foodsBeingEaten.Add(food);
 
-        // Simulate getting eating time and points from the food object
         FoodItem foodItem = food.GetComponent<FoodItem>();
         float baseEatTime = foodItem != null ? foodItem.eatTime : 3f;
-        eatTimer = baseEatTime / eatingTimeMultiplier;
+        float timer = baseEatTime / eatingTimeMultiplier;
+        foodTimers[food] = timer;
+
         eatingEffect.startColor = foodItem != null ? foodItem.GetComponent<Renderer>().material.color : Color.white;
         eatingEffect.Play();
 
@@ -132,11 +142,11 @@ public class Player : MonoBehaviour
         Debug.Log("Started eating " + food.name);
     }
 
-    private void ConsumeFood()
+    private void ConsumeFood(GameObject food)
     {
-        if (currentFood != null)
+        if (food != null)
         {
-            FoodItem foodItem = currentFood.GetComponent<FoodItem>();
+            FoodItem foodItem = food.GetComponent<FoodItem>();
 
             if (foodItem != null)
             {
@@ -144,17 +154,39 @@ public class Player : MonoBehaviour
                 UpdateFullness(foodItem.fullness);
             }
 
-            Destroy(currentFood);
+            Destroy(food);
+            foodsBeingEaten.Remove(food);
+            foodTimers.Remove(food);
+
+            Debug.Log("Finished eating " + food.name);
         }
 
-        StopEating();
+        if (foodsBeingEaten.Count == 0)
+        {
+            StopEating();
+        }
+    }
+
+    public void CancelEating(GameObject food)
+    {
+        if (foodsBeingEaten.Contains(food))
+        {
+            foodsBeingEaten.Remove(food);
+
+            Debug.Log("Canceled eating: " + food.name);
+
+            // If that was the last item and state is Eating, return to Idle
+            if (foodsBeingEaten.Count == 0 && state == State.Eating)
+            {
+                StopEating();
+            }
+        }
     }
 
     public void StopEating()
     {
-        isEating = false;
-        currentFood = null;
-        eatTimer = 0f;
+        foodsBeingEaten.Clear();
+        foodTimers.Clear();
         eatingEffect.Stop();
 
         if (state == State.Eating)
@@ -168,7 +200,10 @@ public class Player : MonoBehaviour
         state = State.ThrowingUp;
         throwUpTimer = throwUpTime;
         vomitEffect.Play();
-        isEating = false;
+        foodsBeingEaten.Clear();
+        foodTimers.Clear();
+        eatingEffect.Stop();
+
         Debug.Log("Too full! Throwing up...");
     }
 

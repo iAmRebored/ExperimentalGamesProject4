@@ -6,7 +6,6 @@ public class EatCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the entering object is tagged as "Food"
         if (other.CompareTag("Food"))
         {
             playerRef.StartEating(other.gameObject);
@@ -15,11 +14,10 @@ public class EatCollider : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // Check if the exiting object is tagged as "Food"
         if (other.CompareTag("Food"))
         {
-            playerRef.StopEating();
+            // Optional: implement CancelEating(other.gameObject) if you want to interrupt that specific food
+            playerRef.CancelEating(other.gameObject); 
         }
     }
-
 }

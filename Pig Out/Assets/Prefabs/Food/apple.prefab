@@ -261,6 +261,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodName: Apple
-  eatTime: 3
+  eatTime: 1
   points: 10
   fullness: 25
