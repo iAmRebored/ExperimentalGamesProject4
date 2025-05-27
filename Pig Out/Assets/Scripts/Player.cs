@@ -95,9 +95,9 @@ public class Player : MonoBehaviour
 
         fullness -= fullnessRecoveryFromThrowUp * Time.deltaTime;
         if (fullness < 0) fullness = 0;
-
         if (throwUpTimer <= 0f)
         {
+            UpdateScore(-penalty);
             vomitEffect.Stop();
             throwUpTime += 1f; // Increase throw up time for next time
             penalty += 10f * penaltyMultiplier; // Increase penalty over time

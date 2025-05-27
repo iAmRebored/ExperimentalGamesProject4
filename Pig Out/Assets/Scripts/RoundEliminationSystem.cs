@@ -26,10 +26,10 @@ public class RoundEliminationSystem : MonoBehaviour
         int index = -1;
         for (int i = 0; i < opponents.Count; i++)
         {
-            if (lowestScore > opponents[i].GetComponent<PigAI>().points)
+            if (lowestScore > opponents[i].GetComponent<Player>().points)
             {
-                lowestScore = opponents[i].GetComponent<PigAI>().points;
-                opponents[i].GetComponent<PigAI>().points = 0;
+                lowestScore = opponents[i].GetComponent<Player>().points;
+                opponents[i].GetComponent<Player>().points = 0;
                 lowestScoreCompetitor = opponents[i];
                 index = i;
             }
@@ -37,8 +37,9 @@ public class RoundEliminationSystem : MonoBehaviour
         if (index != -1)
         {
             opponents.RemoveAt(index);
-            lowestScoreCompetitor.gameObject.SetActive(false);
-            lowestScoreCompetitor.GetComponent<PigAI>().eliminated = true;
+            //lowestScoreCompetitor.gameObject.SetActive(false);
+            //lowestScoreCompetitor.GetComponent<PigAI>().eliminated = true;
+            Destroy(lowestScoreCompetitor);
             if (opponents.Count == 0)
             {
                 //Player won
