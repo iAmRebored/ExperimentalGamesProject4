@@ -215,7 +215,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 117
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -468,8 +468,8 @@ Transform:
   m_GameObject: {fileID: 7656905449435927102}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0.09, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.18, y: 0.3, z: 0}
+  m_LocalScale: {x: 1.6743, y: 1, z: 1.7279146}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 690268471375362735}
@@ -947,7 +947,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -968,17 +968,17 @@ MonoBehaviour:
   state: 0
   fullness: 0
   maxFullness: 100
-  fullnessRecovery: 1
-  fullnessRecoveryFromThrowUp: 10
+  fullnessRecovery: 10
+  fullnessRecoveryFromThrowUp: 100
   eatingTimeMultiplier: 1
   pointsMultiplier: 1
   penaltyMultiplier: 1
   points: 0
   penalty: 0
   throwUpTime: 3
-  vomitEffect: {fileID: 0}
+  vomitEffect: {fileID: 8801409194817608450}
   throwUpSound: {fileID: 6161277370032618995}
-  eatingEffect: {fileID: 0}
+  eatingEffect: {fileID: 41944382556961671}
   eatingSound: {fileID: 2586974457768530994}
 --- !u!1001 &1944609235113408725
 PrefabInstance:
@@ -992,6 +992,11 @@ PrefabInstance:
         type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1903237010986992466, guid: 905203eb8644f264abb5df6e6fb911a8,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4846944816475447182, guid: 905203eb8644f264abb5df6e6fb911a8,
         type: 3}
@@ -1053,6 +1058,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 905203eb8644f264abb5df6e6fb911a8, type: 3}
+--- !u!198 &41944382556961671 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1903237010986992466, guid: 905203eb8644f264abb5df6e6fb911a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1944609235113408725}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6467007894143395675 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4846944816475447182, guid: 905203eb8644f264abb5df6e6fb911a8,
@@ -1327,6 +1338,12 @@ PrefabInstance:
 --- !u!4 &821103626267379521 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8873519864839700075, guid: aef912b8affed0e489816d5ff5004b33,
+    type: 3}
+  m_PrefabInstance: {fileID: 8088524477599037738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8801409194817608450 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 748957838971396648, guid: aef912b8affed0e489816d5ff5004b33,
     type: 3}
   m_PrefabInstance: {fileID: 8088524477599037738}
   m_PrefabAsset: {fileID: 0}
