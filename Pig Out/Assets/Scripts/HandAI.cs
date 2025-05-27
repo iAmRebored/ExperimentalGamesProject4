@@ -2,22 +2,21 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-using System.Collections;
-using UnityEngine;
-
 public class HandAI : MonoBehaviour
 {
     [Header("Grabbing")]
     public Transform handTransform;
+    public Transform heldFoodPosition;
     public Transform mouthTransform;
     public float grabRange = 3f;
     public float handSpeed = 5f;
     public float pullSpeed = 8f;
+    public float dropCoolDown = 3f;
     public LayerMask foodLayer;
 
     private GameObject targetFood;
-    private bool isGrabbing = false;
-    private bool isMovingToMouth = false;
+    public bool isGrabbing = false;
+    public bool isMovingToMouth = false;
 
     public bool paused;
 
@@ -39,7 +38,7 @@ public class HandAI : MonoBehaviour
         foreach (Collider col in nearbyFood)
         {
             FoodItem item = col.GetComponent<FoodItem>();
-            if (item != null && !item.isGrabbed)
+            if (item != null && !item.isGrabbed && (item.isTargetedBy != this.gameObject))
             {
                 float dist = Vector3.Distance(handTransform.position, col.transform.position);
                 if (dist < closestDistance)
@@ -53,6 +52,8 @@ public class HandAI : MonoBehaviour
         if (closest != null)
         {
             targetFood = closest;
+            FoodItem foodItem = targetFood.GetComponent<FoodItem>();
+            foodItem.isTargetedBy = this.gameObject;
             StartCoroutine(GrabAndMoveToMouth(targetFood));
         }
     }
@@ -63,18 +64,22 @@ public class HandAI : MonoBehaviour
         FoodItem foodItem = food.GetComponent<FoodItem>();
 
         // Move hand to food
-        while (Vector3.Distance(handTransform.position, food.transform.position) > 0.1f)
+        while (Vector2.Distance(
+                    new Vector2(handTransform.position.x, handTransform.position.z),
+                    new Vector2(food.transform.position.x, food.transform.position.z)
+                ) > 0.1f)
         {
             if (foodItem.isGrabbed)
             {
                 ResetGrabbing();
                 yield break;
             }
-
+            Debug.Log("moving to food");
             Vector3 targetPosXZ = new Vector3(food.transform.position.x, handTransform.position.y, food.transform.position.z);
             handTransform.position = Vector3.MoveTowards(handTransform.position, targetPosXZ, handSpeed * Time.deltaTime);
             yield return null;
         }
+        Debug.Log("reached food");
 
         // If it's still free, grab it
         if (foodItem.isGrabbed)
@@ -84,16 +89,17 @@ public class HandAI : MonoBehaviour
         }
 
         foodItem.isGrabbed = true;
-        food.transform.SetParent(handTransform);
         food.transform.localPosition = Vector3.zero;
-        if (food.TryGetComponent<Rigidbody>(out Rigidbody rb))
-        {
-            rb.isKinematic = true;
-        }
+
+        Rigidbody rb = food.GetComponent<Rigidbody>();
+        if (rb) rb.isKinematic = true;
 
         // Move hand to mouth
         isMovingToMouth = true;
-        while (Vector3.Distance(handTransform.position, mouthTransform.position) > 0.1f)
+        while (Vector2.Distance(
+                new Vector2(handTransform.position.x, handTransform.position.z),
+                new Vector2(mouthTransform.position.x, mouthTransform.position.z)
+                ) > 0.2f)
         {
             if (!food || !foodItem.isGrabbed)
             {
@@ -103,33 +109,35 @@ public class HandAI : MonoBehaviour
 
             Vector3 mouthPosXZ = new Vector3(mouthTransform.position.x, handTransform.position.y, mouthTransform.position.z);
             handTransform.position = Vector3.MoveTowards(handTransform.position, mouthPosXZ, pullSpeed * Time.deltaTime);
+            targetFood.transform.position = heldFoodPosition.position;
             yield return null;
         }
 
-        // Drop and destroy food
-        food.transform.SetParent(null);
-        rb.isKinematic = false;
+        // Notify food it is ready to be eaten
+        foodItem.isGrabbed = false;
+        foodItem.isTargetedBy = null;
+        if (rb) rb.isKinematic = false;
+
         ResetGrabbing();
     }
 
     void ResetGrabbing()
     {
-        if (targetFood != null)
-        {
-            FoodItem item = targetFood.GetComponent<FoodItem>();
-            if (item != null)
-            {
-                item.isGrabbed = false;
-            }
-
-            if (targetFood.transform.parent == handTransform)
-            {
-                targetFood.transform.SetParent(null);
-            }
-        }
-
         targetFood = null;
         isGrabbing = false;
         isMovingToMouth = false;
+        paused = true;
+        float timer = dropCoolDown;
+        StartCoroutine(DropCooldown(timer));
+    }
+
+    IEnumerator DropCooldown(float duration)
+    {
+        while (duration > 0)
+        {
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+        paused = false;
     }
 }
