@@ -6,6 +6,7 @@ public class RoundEliminationSystem : MonoBehaviour
 {
     public GameObject player;
     public List<GameObject> opponents;
+    public AudioSource killPig;
 
     public static void StartRound()
     {
@@ -40,6 +41,7 @@ public class RoundEliminationSystem : MonoBehaviour
             //lowestScoreCompetitor.gameObject.SetActive(false);
             //lowestScoreCompetitor.GetComponent<PigAI>().eliminated = true;
             Destroy(lowestScoreCompetitor);
+            killPig.Play();
             if (opponents.Count == 0)
             {
                 //Player won
