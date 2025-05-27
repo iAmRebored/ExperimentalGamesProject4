@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        timeRemaining = 30;
+        RoundEliminationSystem.StartRound();
     }
 
     // Update is called once per frame

@@ -8,5 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Drag and Drop test.unity
     guid: 567a225ecf91a1c4bb20f9d1f3616f49
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 84db6979ecff3df4ab536cd53654913a
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
