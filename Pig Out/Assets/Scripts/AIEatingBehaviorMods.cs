@@ -13,6 +13,9 @@ public class AIEatingBehaviorMods : MonoBehaviour
     private float fullness;
     private float maxFullness;
 
+    public Vector3 minScale = Vector3.one;
+    public Vector3 maxScale = Vector3.one * 1.3f; // Scale when at max fullness
+
     private void Awake()
     {
         roundEliminationSystem = FindFirstObjectByType<RoundEliminationSystem>();
@@ -50,5 +53,8 @@ public class AIEatingBehaviorMods : MonoBehaviour
             // if this AI is the lowest scorer, lower the delay significantly
             handAI.dropCoolDown = Mathf.Max(adjustedCooldown * 0.5f, 0.1f); // Ensure it doesn't go too low
         }
+
+        // change this scale based on fullness
+        transform.localScale = Vector3.Lerp(minScale, maxScale, fullnessPercent);
     }
 }
